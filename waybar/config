@@ -23,6 +23,10 @@
     "format": "{name}"
   },
 
+  "tray": {
+    "spacing": 14,
+  },
+
   "cpu": {
     "interval": 30,
     "format": "  {avg_frequency}GHz <span color='#aaaaaa'>{usage}%</span>",
