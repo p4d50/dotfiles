@@ -1,0 +1,66 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "FiraCode Nerd Font", sans-serif;
+  font-size: 12px;
+  min-height: 24px;
+  margin: 0 0px;
+}
+
+window#waybar.top {
+  background-color: rgba(4,6,6,0);
+  border-bottom: none;
+  color: #eeeeee;
+  transition-property: background-color;
+  transition-duration: .5s;
+}
+
+label#window {
+  text-shadow: 0px 0px 3px #18181e;
+}
+
+.modules-left > widget > label,
+.modules-left > box > widget > label,
+.modules-right > widget > label,
+.modules-right > box > widget > label {
+  background-color: rgba(4, 6, 6, 0.92);
+  padding: 0 10px;
+  margin: 0px 0px 0px 0px;
+}
+
+window#waybar.bottom .modules-left > widget > label,
+window#waybar.bottom .modules-right > widget > label {
+  font-size: 10px;
+}
+
+#workspaces {
+  background-color: rgba(4, 6, 6, 0.92);
+  margin: 0px 0px 0px 0px;
+}
+
+#workspaces button {
+  padding: 4px 6px;
+  color: #aaa;
+  border-radius:  0px;
+  min-width: 24px;
+}
+
+#workspaces button.focused {
+  font-weight: 600;
+  color: #fff;
+}
+
+#workspaces button.focused:hover {
+  color: #282828;
+}
+
+#workspaces button.urgent {
+  color: #ffffff;
+  background-color: #e27878;
+}
+
+#tray {
+  background-color: rgba(0, 0, 0, 0);
+  margin-left: 10px;
+}
+

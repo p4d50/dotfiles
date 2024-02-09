@@ -1,0 +1,42 @@
+[{
+  "layer": "top",
+  "position": "top",
+  "output": "HDMI-A-1",
+
+  "modules-left": [
+    "sway/workspaces",
+    "sway/language",
+    "tray",
+  ],
+  "modules-center": [
+    "sway/window",
+  ],
+  "modules-right": [
+    "cpu",
+    "wireplumber",
+    "clock",
+  ],
+
+  "sway/workspaces": {
+    "all-outputs": true,
+    "disable-scroll": true,
+    "format": "{name}"
+  },
+
+  "cpu": {
+    "interval": 30,
+    "format": "  {avg_frequency}GHz <span color='#aaaaaa'>{usage}%</span>",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    },
+  },
+
+  "wireplumber": {
+    "format": "{icon}  {node_name} <span color='#aaaaaa'>{volume}%</span>",
+    "format-muted": "",
+    "on-click": "pavucontrol-qt",
+    "on-click-right": "helvum",
+    "format-icons": ["", "", ""]
+  },
+}]
