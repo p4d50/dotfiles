@@ -13,6 +13,7 @@
   ],
   "modules-right": [
     "cpu",
+    "custom/memory",
     "wireplumber",
     "clock",
   ],
@@ -34,6 +35,13 @@
       "warning": 70,
       "critical": 90
     },
+  },
+
+  "custom/memory": {
+    "return-type": "json",
+    "exec": "~/.config/waybar/memory.sh",
+    "interval": 30,
+    "format": "  {}",
   },
 
   "wireplumber": {
