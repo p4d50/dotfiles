@@ -7,6 +7,13 @@
   margin: 0 0px;
 }
 
+button:hover {
+  box-shadow: none; /* Remove predefined box-shadow */
+  text-shadow: none; /* Remove predefined text-shadow */
+  background: none; /* Remove predefined background color (white) */
+  transition: none; /* Disable predefined animations */
+}
+
 window#waybar.top {
   background-color: rgba(4,6,6,0);
   border-bottom: none;
@@ -45,13 +52,14 @@ window#waybar.bottom .modules-right > widget > label {
   min-width: 24px;
 }
 
+#workspaces button:hover {
+  background: none;
+  border: none;
+}
+
 #workspaces button.focused {
   font-weight: 600;
   color: #fff;
-}
-
-#workspaces button.focused:hover {
-  color: #282828;
 }
 
 #workspaces button.urgent {
