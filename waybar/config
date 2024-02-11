@@ -15,6 +15,7 @@
     "cpu",
     "custom/memory",
     "wireplumber",
+    "custom/internet_connection",
     "clock",
   ],
 
@@ -50,6 +51,13 @@
     "on-click": "pavucontrol-qt",
     "on-click-right": "helvum",
     "format-icons": ["", "", ""]
+  },
+
+  "custom/internet_connection": {
+    "return-type": "json",
+    "exec": "~/.config/waybar/internet_status.sh",
+    "interval": 30,
+    "format": "{}"
   },
 
   "clock": {
