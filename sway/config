@@ -1,13 +1,10 @@
-### Variables
+# +-------------------+
+# |                   |
+# |     Variables     |
+# |                   |
+# +-------------------+
 
-#   _   _                
-#  | | | |               
-#  | | | | __ _ _ __ ___ 
-#  | | | |/ _` | '__/ __|
-#  \ \_/ / (_| | |  \__ \
-#   \___/ \__,_|_|  |___/ 
-
-# Logo key. Use Mod1 for Alt.
+# Logo key
 set $mod Mod4
 
 # Direction keys
@@ -20,86 +17,68 @@ set $right l
 set $term alacritty
 set $menu fuzzel
 
-#    _____       _               _   
-#   |  _  |     | |             | |  
-#  | | | |_   _| |_ _ __  _   _| |_ 
-#  | | | | | | | __| '_ \| | | | __|
-#  \ \_/ / |_| | |_| |_) | |_| | |_ 
-#   \___/ \__,_|\__| .__/ \__,_|\__|
-#                  | |              
-#                  |_|              
+# +----------------+
+# |                |
+# |     Output     |
+# |                |
+# +----------------+
 
 # Default wallpaper
-output * bg ~/Pictures/wap.jpg fill
+output * bg ~/Pictures/vodka.png fill
 
-# Monitor resolutions
+# Monitor resolutions & positions
 output HDMI-A-1 resolution 1920x1080 position 1440,0
-
 # Second monitor, currently unplugged
 # output VGA-1 resolution 1440x900 position 0,180
 
-#     _____                  _   
-#   |_   _|                | |  
-#     | | _ __  _ __  _   _| |_
-#     | || '_ \| '_ \| | | | __|
-#   _| || | | | |_) | |_| | |_ 
-#  \___/_| |_| .__/ \__,_|\__|
-#            | |              
-#            |_|              
+# +---------------+
+# |               |
+# |     Input     |
+# |               |
+# +---------------+
 
-# Remap right ctrl key for language switching
 input type:keyboard {
     xkb_layout rs(latin),us,rs
+    # Remap right CTRL to language switch
     xkb_options grp:rctrl_toggle
 }
 
-#for_window [app_id="foot"] border none
-#for_window [app_id="firefox"] border none
-#for_window [app_id="KeePassXC"] border none
+# +----------------------+
+# |                      |
+# |     Key Bindings     |
+# |                      |
+# +----------------------+
 
-### Key bindings
-#
-# Basics:
-#
-    # Start a terminal
-    bindsym $mod+Return exec $term
+# Start a terminal
+bindsym $mod+Return exec $term
 
-    # Kill focused window
-    bindsym $mod+Shift+q kill
+# Kill focused window
+bindsym $mod+Shift+q kill
 
-    # Start your launcher
-    bindsym $mod+d exec $menu
+# Start app launcher
+bindsym $mod+d exec $menu
 
-    # Screenshot taking
-    bindsym $mod+p exec grim -g "$(slurp -d)" - | wl-copy && notify-send "Screenshot is copied to clipboard."
+# Screenshot taking
+bindsym Print exec grim - | wl-copy && notify-send "Whole screen screenshot is copied to clipboard."
+bindsym $mod+Print exec grim -g "$(slurp -d)" - | wl-copy && notify-send "Screenshot is copied to clipboard."
+bindsym $mod+Shift+p exec grim /home/p4d50/Pictures/Screenshots/$(date +'%s_grim.png') && notify-send "Screenshot has been store in directory."
 
-    bindsym $mod+Shift+p exec grim /home/p4d50/Pictures/Screenshots/$(date +'%s_grim.png') && notify-send "Screenshot has been store in directory."
+# Volume controls
+bindsym $mod+Alt+O exec pamixer -d 10
+bindsym $mod+Alt+P exec pamixer -i 10
+bindsym $mod+Alt+I exec pamixer -i 5
+bindsym $mod+Alt+U exec pamixer -d 5
+bindsym $mod+Alt+M exec pamixer -t
+bindsym $mod+Alt+K exec playerctl play-pause
 
-    bindsym Print exec grim - | wl-copy && notify-send "Whole screen screenshot is copied to clipboard."
+floating_modifier $mod normal
 
-    # Volume
-    bindsym $mod+Alt+O exec pamixer -d 10
-    bindsym $mod+Alt+P exec pamixer -i 10
+# Reload the configuration file
+bindsym $mod+Shift+c reload
 
-    bindsym $mod+Alt+I exec pamixer -i 5
-    bindsym $mod+Alt+U exec pamixer -d 5
+# Exit sway (logs you out of your Wayland session)
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
-    bindsym $mod+Alt+M exec pamixer -t
-
-    bindsym $mod+Alt+K exec playerctl play-pause
-
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
-    floating_modifier $mod normal
-
-    # Reload the configuration file
-    bindsym $mod+Shift+c reload
-
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
@@ -235,6 +214,8 @@ bar {
   swaybar_command waybar
 }
 
+exec mako
+exec /usr/bin/keepassxc
+
 include @sysconfdir@/sway/config.d/*
 
-exec mako
