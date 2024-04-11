@@ -56,7 +56,7 @@
   "custom/internet_connection": {
     "return-type": "json",
     "exec": "~/.config/waybar/internet_status.sh",
-    "interval": 30,
+    "interval": 10,
     "format": "{}"
   },
 

@@ -14,7 +14,7 @@ set $up k
 set $right l
 
 # Preferred apps
-set $term alacritty
+set $term foot
 set $menu fuzzel
 
 # +----------------+
@@ -24,7 +24,7 @@ set $menu fuzzel
 # +----------------+
 
 # Default wallpaper
-output * bg ~/Pictures/vodka.png fill
+output * bg ~/Pictures/wpe.jpg fill
 
 # Monitor resolutions & positions
 output HDMI-A-1 resolution 1920x1080 position 1440,0
@@ -194,7 +194,7 @@ bindsym $mod+r mode "resize"
 
 font "FiraCode Nerd Font 9"
 
-client.focused #000000 #000000 #ffffff #000000 #000000
+client.focused #021727 #021727 #ffffff #021727 #021727
 
 smart_gaps off
 smart_borders off
