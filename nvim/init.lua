@@ -35,16 +35,29 @@ require('lazy').setup({
   -- lualine
   {
     'nvim-lualine/lualine.nvim',
+    dependencies = {
+      "meuter/lualine-so-fancy.nvim",
+    },
     config = function()
       require('lualine').setup {
         theme = 'auto',
+        globalstatus = true,
+        icons_enabled = true,
         sections = {
-          lualine_a = {'mode'},
-          lualine_b = {'branch'},
-          lualine_c = {'filename'},
-          lualine_x = {'filetype'},
-          lualine_y = {'progress'},
-          lualine_z = {'location'}
+          lualine_a = {},
+          lualine_b = {'fancy_branch'},
+          lualine_c = {
+            'filename',
+            { "fancy_diagnostics", sources = { "nvim_lsp" }, symbols = { error = " ", warn = " ", info = " " } },
+            'fancy_searchcount'
+          },
+					lualine_x = {
+						'fancy_lsp_servers',
+						'fancy_diff',
+						'progress',
+					},
+          lualine_y = {},
+          lualine_z = {}
         }
       }
     end
@@ -170,6 +183,13 @@ require('lazy').setup({
         auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
       }
     end,
+  },
+
+  {
+    'VonHeikemen/fine-cmdline.nvim',
+    requires = {
+      {'MunifTanjim/nui.nvim'}
+    }
   },
 
   -- Telescope
@@ -316,37 +336,56 @@ require('lazy').setup({
 
       local capabilities = cmp_nvim_lsp.default_capabilities()
 
-      lspconfig.phpactor.setup {
-        on_attach = on_attach,
-        init_options = {
-          ["language_server_phpstan.enabled"] = false,
-          ["language_Server_psalm.enalbed"] = false,
+      local servers = {
+        phpactor = {
+          init_options = {
+            ["language_server_phpstan.enabled"] = false,
+            ["language_Server_psalm.enalbed"] = false,
+          }
+        },
+        lexical = {
+          filetypes = { "elixir", "eelixir", "heex" },
+          cmd = { "/home/p4d50/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
+          settings = {},
         }
       }
 
-      local lexical_config = {
-        filetypes = { "elixir", "eelixir", "heex" },
-        cmd = { "/home/p4d50/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
-        settings = {},
-      }
-
-      if not configs.lexical then
-        configs.lexical = {
-          default_config = {
-            filetypes = lexical_config.filetypes,
-            cmd = lexical_config.cmd,
-            root_dir = function(fname)
-              return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.os_homedir()
-            end,
-            -- optional settings
-            settings = lexical_config.settings,
-          },
-        }
+      for server_name, config in pairs(servers) do
+        config.on_attach = on_attach
+        lspconfig[server_name].setup(config)
       end
 
-      lspconfig.lexical.setup({
-        capabilities = capabilities,
-      })
+      --lspconfig.phpactor.setup {
+      --  on_attach = on_attach,
+      --  init_options = {
+      --    ["language_server_phpstan.enabled"] = false,
+      --    ["language_Server_psalm.enalbed"] = false,
+      --  }
+      --}
+
+      --local lexical_config = {
+      --  filetypes = { "elixir", "eelixir", "heex" },
+      --  cmd = { "/home/p4d50/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
+      --  settings = {},
+      --}
+
+      --if not configs.lexical then
+      --  configs.lexical = {
+      --    default_config = {
+      --      filetypes = lexical_config.filetypes,
+      --      cmd = lexical_config.cmd,
+      --      root_dir = function(fname)
+      --        return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.os_homedir()
+      --      end,
+      --      -- optional settings
+      --      settings = lexical_config.settings,
+      --    },
+      --  }
+      --end
+
+      --lspconfig.lexical.setup({
+      --  capabilities = capabilities,
+      --})
 
       -- Lsp keymaps
       vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
@@ -519,3 +558,5 @@ vim.keymap.set('n', '<leader>l', ':NvimTreeFindFile!<CR>', { noremap = true })
 
 -- Yank whole line
 vim.keymap.set('n', 'Y', 'y$')
+
+vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', {noremap = true})
