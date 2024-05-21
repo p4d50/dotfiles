@@ -52,31 +52,75 @@ require('lazy').setup({
 
   -- file explorer
   {
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    event = "VeryLazy",
+    keys = {
+      { "<leader>e", ":Neotree toggle float<CR>", silent = true },
+      { "<leader><tab>", ":Neotree toggle left<CR>", silent = true },
+    },
     config = function()
-      require("nvim-tree").setup({
-        sort_by = "case_sensitive",
-        on_attach = function(bufnr)
-          local api = require('nvim-tree.api')
-
-          local function opts(desc)
-            return {
-              desc = 'nvim-tree: ' .. desc,
-              buffer = bufnr,
-              noremap = true,
-              silent = true,
-              nowait = true,
-            }
-          end
-
-          api.config.mappings.default_on_attach(bufnr)
-
-          vim.keymap.set('n', 's', api.node.open.vertical, opts('Open: Vertical Split'))
-          vim.keymap.set('n', 'i', api.node.open.horizontal, opts('Open: Horizontal Split'))
-          vim.keymap.set('n', 'u', api.tree.change_root_to_parent, opts('Up'))
-        end
+      require("neo-tree").setup({
+        close_if_last_window = true,
+        popup_border_style = "single",
+        enable_git_status = true,
+        enable_modified_markers = true,
+        enable_diagnostics = true,
+        sort_case_insensitive = true,
+        default_component_configs = {
+          indent = {
+            with_markers = true,
+            with_expanders = true,
+          },
+          modified = {
+            symbol = " ",
+            highlight = "NeoTreeModified",
+          },
+          icon = {
+            folder_closed = "",
+            folder_open = "",
+            folder_empty = "",
+            folder_empty_open = "",
+          },
+          git_status = {
+            symbols = {
+              -- Change type
+              added = "",
+              deleted = "",
+              modified = "",
+              renamed = "",
+              -- Status type
+              untracked = "",
+              ignored = "",
+              unstaged = "",
+              staged = "",
+              conflict = "",
+            },
+          },
+        },
+        window = {
+          position = "float",
+          width = 35,
+        },
+        filesystem = {
+          use_libuv_file_watcher = true,
+          filtered_items = {
+            hide_dotfiles = false,
+            hide_gitignored = false,
+            hide_by_name = {
+              "node_modules",
+            },
+            never_show = {
+              ".DS_Store",
+              "thumbs.db",
+            },
+          },
+        }
       })
     end,
   },
@@ -429,6 +473,7 @@ vim.opt.autoindent = true -- copy indent from current line when starting a new l
 vim.opt.wrap = true
 
 vim.g.mapleader = ','
+vim.g.maplocalleader = ','
 
 -- keymaps
 local keymap = vim.keymap
