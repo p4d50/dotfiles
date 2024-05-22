@@ -5,16 +5,16 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",
     lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  --
-  -- UI STUFF
-  --
+  ---------------------------
+  --    User Interface    --
+  --------------------------
 
   -- colorscheme
   {
@@ -75,7 +75,7 @@ require('lazy').setup({
     event = "VeryLazy",
     keys = {
       { "<leader>e", ":Neotree toggle float<CR>", silent = true },
-      { "<leader><tab>", ":Neotree toggle left<CR>", silent = true },
+      { "<leader><tab>", ":Neotree toggle right<CR>", silent = true },
     },
     config = function()
       require("neo-tree").setup({
@@ -140,9 +140,11 @@ require('lazy').setup({
 
   {
     "j-hui/fidget.nvim",
-    opts = {
-      -- options
-    },
+    opts = {},
+  },
+
+  {
+    'matze/vim-move'
   },
 
   {
@@ -193,7 +195,13 @@ require('lazy').setup({
       "rcarriga/nvim-notify",
     },
     config = function ()
-      require("noice").setup({})
+      require("noice").setup({
+      })
+
+      require("notify").setup({
+        render = 'compact',
+        background_colour = '#000000'
+      })
     end
   },
 
@@ -321,13 +329,12 @@ require('lazy').setup({
       })
     end,
   },
-  
+
   { 'mbbill/undotree' },
 
   --
   -- Autocompletion & lsp stuff 
   --
-  
   {
     'neovim/nvim-lspconfig',
     event = { "BufReadPre", "BufNewFile" },
@@ -336,7 +343,7 @@ require('lazy').setup({
     },
     config = function ()
       local lspconfig = require("lspconfig")
-      local configs = require("lspconfig.configs")
+      --local configs = require("lspconfig.configs")
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
       local capabilities = cmp_nvim_lsp.default_capabilities()
@@ -464,24 +471,24 @@ require('lazy').setup({
   },
 })
 
--- disable netrw
+-- disable netrw file exporer
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.opt.termguicolors = true -- Enable 24-bit RGB colors
+vim.opt.termguicolors = true          -- Enable 24-bit RGB colors
 
-vim.opt.relativenumber = true        -- Show line numbers with relative
-vim.opt.showmatch = true     -- Highlight matching parenthesis
-vim.opt.splitright = true    -- Split windows right to the current windows
-vim.opt.splitbelow = true    -- Split windows below to the current windows
-vim.opt.autowrite = true     -- Automatically save before :next, :make etc.
-vim.opt.autochdir = true     -- Change CWD when I open a file
+vim.opt.relativenumber = true         -- Show line numbers with relative
+vim.opt.showmatch = true              -- Highlight matching parenthesis
+vim.opt.splitright = true             -- Split windows right to the current windows
+vim.opt.splitbelow = true             -- Split windows below to the curretn windows
+vim.opt.autowrite = true              -- Automatically save before :next,: make etc.
+vim.opt.autochdir = true              -- Change CWD when I open a file    
 
-vim.opt.mouse = 'a'                -- Enable mouse support
-vim.opt.clipboard = 'unnamedplus'  -- Copy/paste to system clipboard
-vim.opt.swapfile = false           -- Don't use swapfile
-vim.opt.ignorecase = true          -- Search case insensitive...
-vim.opt.smartcase = true           -- ... but not it begins with upper case 
+vim.opt.mouse = 'a'                   -- Enable mouse support
+vim.opt.clipboard = 'unnamedplus'     -- Copy/paste to system clipboard
+vim.opt.swapfile = false              -- Don't use swapfile
+vim.opt.ignorecase = true             -- Search case insensitive...
+vim.opt.smartcase = true               -- ... but not it begins with upper case 
 vim.opt.completeopt = 'menuone,noinsert,noselect'  -- Autocomplete options
 
 vim.opt.undofile = true
@@ -494,15 +501,20 @@ vim.opt.tabstop = 2       -- number of spaces a TAB counts for
 vim.opt.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.wrap = true
 
+-------------------
+--    Keymaps    --
+-------------------
+
+-- map leader key
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
--- keymaps
 local keymap = vim.keymap
 
-vim.keymap.set('i', 'jk', '<Esc>')
+keymap.set('i', 'jj', '<Esc>')
 
-keymap.set('n', '<leader>nh', ':nohl<CR>')
+keymap.set('n', '<Esc>', ':nohl<CR>', { silent = true })
+
 keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>')
 keymap.set('n', '<leader>wr', '<cmd>SessionRestore<CR>')
 
@@ -512,29 +524,28 @@ keymap.set('n', '<leader>sh', '<C-w>s')
 keymap.set('n', '<leader>se', '<C-w>=')
 keymap.set('n', '<leader>sx', '<cmd>close<CR>')
 
-vim.keymap.set('n', '<C-h>', '<C-w>h')
-vim.keymap.set('n', '<C-l>', '<C-w>l')
-vim.keymap.set('n', '<C-j>', '<C-w>j')
-vim.keymap.set('n', '<C-k>', '<C-w>k')
-
--- visual mode section moving
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+keymap.set('n', '<C-h>', '<C-w>h')
+keymap.set('n', '<C-l>', '<C-w>l')
+keymap.set('n', '<C-j>', '<C-w>j')
+keymap.set('n', '<C-k>', '<C-w>k')
 
 -- search terms stay in middle
-vim.keymap.set('n', 'n', "nzzzv")
-vim.keymap.set('n', 'N', "Nzzzv")
+keymap.set('n', 'n', "nzzzv")
+keymap.set('n', 'N', "Nzzzv")
 
 -- replace word in whole file
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-vim.keymap.set('n', '<leader>U', vim.cmd.UndotreeToggle)
+keymap.set('n', '<leader>U', vim.cmd.UndotreeToggle)
 
-vim.keymap.set({'n', 'x', 'o'}, 'H', '^')
-vim.keymap.set({'n', 'x', 'o'}, 'L', '$')
+keymap.set({'n', 'x', 'o'}, 'H', '^')
+keymap.set({'n', 'x', 'o'}, 'L', '$')
 
-vim.keymap.set('n', '<C-d>', '<C-d>zz')
-vim.keymap.set('n', '<C-u>', '<C-u>zz')
+keymap.set('n', '<C-d>', '<C-d>zz')
+keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Yank whole line
-vim.keymap.set('n', 'Y', 'y$')
+keymap.set('n', 'Y', 'y$')
+
+-- quick save
+keymap.set('n', '<leader>w', ':wq!<CR>', { silent = true })
