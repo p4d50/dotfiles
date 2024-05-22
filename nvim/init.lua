@@ -186,10 +186,15 @@ require('lazy').setup({
   },
 
   {
-    'VonHeikemen/fine-cmdline.nvim',
-    requires = {
-      {'MunifTanjim/nui.nvim'}
-    }
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    config = function ()
+      require("noice").setup({})
+    end
   },
 
   -- Telescope
@@ -337,6 +342,15 @@ require('lazy').setup({
       local capabilities = cmp_nvim_lsp.default_capabilities()
 
       local servers = {
+        lua_ls = {
+          settings = {
+            Lua = {
+              diagnostics = {
+                globals = { 'vim' }
+              }
+            }
+          }
+        },
         phpactor = {
           init_options = {
             ["language_server_phpstan.enabled"] = false,
@@ -351,41 +365,10 @@ require('lazy').setup({
       }
 
       for server_name, config in pairs(servers) do
-        config.on_attach = on_attach
+        -- config.on_attach = on_attach
+        config.capabilities = capabilities
         lspconfig[server_name].setup(config)
       end
-
-      --lspconfig.phpactor.setup {
-      --  on_attach = on_attach,
-      --  init_options = {
-      --    ["language_server_phpstan.enabled"] = false,
-      --    ["language_Server_psalm.enalbed"] = false,
-      --  }
-      --}
-
-      --local lexical_config = {
-      --  filetypes = { "elixir", "eelixir", "heex" },
-      --  cmd = { "/home/p4d50/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
-      --  settings = {},
-      --}
-
-      --if not configs.lexical then
-      --  configs.lexical = {
-      --    default_config = {
-      --      filetypes = lexical_config.filetypes,
-      --      cmd = lexical_config.cmd,
-      --      root_dir = function(fname)
-      --        return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.os_homedir()
-      --      end,
-      --      -- optional settings
-      --      settings = lexical_config.settings,
-      --    },
-      --  }
-      --end
-
-      --lspconfig.lexical.setup({
-      --  capabilities = capabilities,
-      --})
 
       -- Lsp keymaps
       vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
@@ -553,10 +536,5 @@ vim.keymap.set({'n', 'x', 'o'}, 'L', '$')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
-vim.keymap.set('n', '<C-p>', ':NvimTreeToggle<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>l', ':NvimTreeFindFile!<CR>', { noremap = true })
-
 -- Yank whole line
 vim.keymap.set('n', 'Y', 'y$')
-
-vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', {noremap = true})
